@@ -19,6 +19,8 @@ class AddViewController: UIViewController{
   override func viewDidLoad() {
     super.viewDidLoad()
     self.title = "Choose a city"
+    tableView.backgroundColor = UIColor.black
+    searchBar.barTintColor = UIColor.black
     headers = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".characters.map { String($0) }
     filterdCities = cities
   }

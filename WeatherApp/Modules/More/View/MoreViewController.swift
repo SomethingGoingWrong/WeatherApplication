@@ -22,6 +22,7 @@ class MoreViewController: UIViewController {
   @IBOutlet weak var cloudnesLabel: UILabel!
   @IBOutlet weak var windLabel: UILabel!
   @IBOutlet weak var collectionView: UICollectionView!
+  var activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.whiteLarge)
   var city: String?
   var location: CLLocationCoordinate2D?
   
@@ -31,6 +32,7 @@ class MoreViewController: UIViewController {
     self.navigationController?.navigationBar.tintColor = UIColor.black
     collectionView.allowsMultipleSelection = false
     collectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .bottom)
+    
     let backButton = UIButton(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
     backButton.addTarget(self, action: #selector(returnToMainView), for: .touchUpInside)
     backButton.setBackgroundImage(UIImage(named: "return"), for: .normal)
@@ -40,6 +42,10 @@ class MoreViewController: UIViewController {
     let currentHeight = backBarItem.customView?.heightAnchor.constraint(equalToConstant: 30)
     currentHeight?.isActive = true
     self.navigationItem.leftBarButtonItem = backBarItem
+    
+    activityIndicator.hidesWhenStopped = true
+    activityIndicator.center = view.center
+    activityIndicator.startAnimating()
     
     if city != nil{
       presenter?.updateView(withCity: city!, withDay: 0)
@@ -151,6 +157,11 @@ extension MoreViewController: UICollectionViewDataSource,UICollectionViewDelegat
       cell!.backgroundColor = UIColor.black
       cell!.weatherLabel.textColor = UIColor.white
       cell!.dataLabel.textColor = UIColor.white
+    }
+    if let lastVisibleIndexPath = collectionView.indexPathsForVisibleItems.last{
+      if indexPath == lastVisibleIndexPath{
+        activityIndicator.stopAnimating()
+      }
     }
   }
 }
